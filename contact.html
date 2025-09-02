@@ -255,12 +255,12 @@
 									<div class="row">
 										<div class="col-lg-6">
 											<label class="mry-label mry-fo" for="firstName">Имя</label>
-											<div class="mry-fo"><input id="firstName" name="firstName" placeholder="Palonchi" class="mry-default-link" type="text" data-parsley-pattern="^[a-zA-Z\s.]+$" required>
+											<div class="mry-fo"><input id="firstName" name="firstName" placeholder="Palonchi" class="mry-default-link" type="text" required>
 											</div>
 										</div>
 										<div class="col-lg-6">
 											<label class="mry-label mry-fo" for="lastName">Фамилия</label>
-											<div class="mry-fo"><input id="lastName" name="lastName" placeholder="Palonchiev" class="mry-default-link" type="text" data-parsley-pattern="^[a-zA-Z\s.]+$" required>
+											<div class="mry-fo"><input id="lastName" name="lastName" placeholder="Palonchiev" class="mry-default-link" type="text" required>
 											</div>
 										</div>
 									</div>
@@ -272,15 +272,14 @@
 										</div>
 										<div class="col-lg-6">
 											<label class="mry-label mry-fo" for="phone">Номер</label>
-											<div class="mry-fo"><input id="phone" name="phone" placeholder="+998 00 000 00 00" class="mry-default-link" type="text" data-parsley-pattern="^\+{1}[0-9]+$"></div>
+											<div class="mry-fo"><input id="phone" name="phone" placeholder="+998 00 000 00 00" class="mry-default-link" type="text"></div>
 										</div>
 									</div>
 
 									<div class="mry-fade-object">
 										<label class="mry-label mry-fo" for="message">Сообщение</label>
 										<div class="mry-fo">
-											<textarea id="message" name="message" rows="8" cols="80" placeholder="Напишите своё сообщение сюда" class="mry-default-link" type="text"
-												data-parsley-pattern="^[a-zA-Z0-9\s.:,!?']+$" required></textarea>
+											<textarea id="message" name="message" rows="8" cols="80" placeholder="Напишите своё сообщение сюда" class="mry-default-link" type="text" required></textarea>
 										</div>
 									</div>
 									<div class="row align-items-center">
@@ -391,6 +390,29 @@
 	  const currentYear = new Date().getFullYear();
 	  document.getElementById("year-range").textContent =
 	    startYear === currentYear ? startYear : `${startYear}–${currentYear}`;
+	</script>
+	<script>
+		$(function(){
+		  const $form = $('#form');
+		  $form.on('submit', function(e){
+		    e.preventDefault();
+		    $.ajax({
+		      url: $form.attr('action'),
+		      method: 'POST',
+		      data: $form.serialize(),
+		      dataType: 'json'
+		    }).done(function(res){
+		      if(res.ok){
+		        alert(res.message);      // replace with your styled modal/toast
+		        $form[0].reset();
+		      } else {
+		        alert(res.message);      // could also map res.errors to field hints
+		      }
+		    }).fail(function(xhr){
+		      alert('Ошибка отправки. Попробуйте ещё раз или свяжитесь по email.');
+		    });
+		  });
+		});
 	</script>
 
 </body>
